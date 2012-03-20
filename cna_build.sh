@@ -29,10 +29,10 @@ lunch cna_vibrantmtd-userdebug
 make -j7 squish CNA_RELEASE=true | tee cna_vibrant.log
 
 # Set variables to grab zip names
-CAPTIVATE={cat cna_captivate.log | grep .zip | tail -1 | awk '{print $2}'}
-FASCINATE={cat cna_fascinate.log | grep .zip | tail -1 | awk '{print $2}'}
-GALAXYS={cat cna_galaxys.log | grep .zip | tail -1 | awk '{print $2}'}
-VIBRANT={cat cna_vibrant.log | grep .zip | tail -1 | awk '{print $2}'}
+CAPTIVATE=$(tail cna_captivate.log | cut -f3 -d ' ' | cut -f1 -d ' ' | sed -e '/^$/ d')
+FASCINATE=$(tail cna_fascinate.log | cut -f3 -d ' ' | cut -f1 -d ' ' | sed -e '/^$/ d')
+GALAXYS=$(tail cna_galaxys.log | cut -f3 -d ' ' | cut -f1 -d ' ' | sed -e '/^$/ d')
+VIBRANT=$(tail cna_vibrant.log | cut -f3 -d ' ' | cut -f1 -d ' ' | sed -e '/^$/ d')
 
 #Upload to goo
 scp -P 2222 $CAPTIVATE glitch@upload.goo-inside.me:~/public_html/CNA/Captivate
