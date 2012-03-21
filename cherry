@@ -1,1 +1,29 @@
 #!/bin/bash
+
+#This is just a template, obviously you have to add your own picks for it to actually be effective. 
+
+#Package/apps section
+cd ~/CM9/packages/apps/Trebuchet/
+git fetch http://review.cyanogenmod.com/p/CyanogenMod/android_packages_apps_Trebuchet refs/changes/67/13667/2 && git cherry-pick FETCH_HEAD
+
+cd ../Phone
+#Add voicemail notification
+git fetch http://review.cyanogenmod.com/p/CyanogenMod/android_packages_apps_Phone refs/changes/06/13706/6 && git cherry-pick FETCH_HEAD
+
+cd ../Music
+#Fix crash
+git fetch http://review.cyanogenmod.com/p/CyanogenMod/android_packages_apps_Music refs/changes/08/13608/4 && git cherry-pick FETCH_HEAD
+
+cd ../Settings
+#Hide ADB notifications
+git fetch http://review.cyanogenmod.com/p/CyanogenMod/android_packages_apps_Settings refs/changes/79/11279/2 && git cherry-pick FETCH_HEAD
+
+
+
+#Framework
+cd ~/CM9/frameworks/base
+#Hide ADB notification
+git fetch http://review.cyanogenmod.com/p/CyanogenMod/android_frameworks_base refs/changes/78/11278/1 && git cherry-pick FETCH_HEAD
+# Organize ringtones
+git fetch http://review.cyanogenmod.com/p/CyanogenMod/android_frameworks_base refs/changes/94/13394/4 && git cherry-pick FETCH_HEAD
+
