@@ -10,8 +10,11 @@ DEVICE="$1"
 ADDITIONAL="$2"
 
 # Clean out old builds
+cp cherry ~/CM9/cherry
 cd ~/CM9
-make clobber
+#. build/envsetup.sh
+#lunch cm_captivatemtd-userdebug
+#make clobber
 
 # Sync Source, not too fast though, I don't want to have to restart   #
 # it if it hangs.                                                     #
@@ -19,9 +22,10 @@ repo sync -j10
 
 # Check on a cherry-pick file, if it exists, run it. If not, build a  #
 # clean build.                                                        #
-if test -x cherry ; then
+if test -x cherry; then
 	echo cherry-pick file found, picking cherries now!
 	./cherry
+	rm cherry
 else
 	echo no cherries found, running a clean build
 fi
