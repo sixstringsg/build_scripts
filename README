@@ -1,5 +1,7 @@
 This probably won't be useful to anyone else except for me, but if anyone wants part of it I don't mind. Just a collection of build scripts to make my various compiling endevears easier, and github keeps it all nice and backed up and organized. 
-
+It's now turning into just a collection of scripts. The ssh.sh script is to easily
+add SSH keys to a new server. The more you can automate, the faster things go, 
+the more you have time for things. 
 A few general notes: 
 1. Remember that these are set to upload them to my servers, adapt them for your servers. 
 2. On the CM9 kang script, I recommend you test your cherry script whenever you add new things before running this. If any of the picks don't apply cleanly, the script ignores that, and builds with the git comments in the code. 
