@@ -1,0 +1,40 @@
+#!/bin/bash
+# Thank Smasher816 for this, WTFPL!
+# Overrides:	branch=$1	server=$2			port=$3		user=$4
+# Defaults:		$1=jb		$2=gerrit.aokp.co	$3=29418	$4=$USER
+
+#Google for some magic bash replacement default variable stuff
+BRANCH=${1:-jb}
+SERVER=${2:-gerrit.aokp.co}
+[ -z $3 ] && PORT=29418 || PORT=$3 #Someone make numerical defaults work
+ACCOUNT=${4:-$USER} # $USER is the currently logged on user (shell var)
+DIR_CURRENT=$PWD # $PWD is the current directory (shell var)
+
+# Loop through directory parents, find one with .git
+# ex: frameworks/base/wifi will find framerworks/base
+DIR_TOP=${DIR_CURRENT}
+while [ ! -d "$DIR_TOP/.git" ]; do
+DIR_TOP=$(dirname ${DIR_TOP})
+done
+
+# Loop through directory parents, find one with .repo (the main android folder)
+# ex: ~/FNV/frameworks/base/wifi will find ~/FNV
+DIR_BOTTOM=${DIR_CURRENT}
+while [ ! -d "$DIR_BOTTOM/.repo" ]; do
+DIR_BOTTOM=$(dirname ${DIR_BOTTOM})
+done
+
+# Take DIR_TOP (FNV/frameworks/base) and take off bottom (FNV/) leaving the local branch folder (frameworks/base)
+DEST=$(echo "${DIR_TOP}" | awk "BEGIN {FS=\"${DIR_BOTTOM}/\"} {print \$2}")
+
+# Take the local folder and find it in the git manifest
+PROJECT=$(grep ${DEST} ${DIR_BOTTOM}/.repo/manifest.xml)
+
+# Take the remote part (name="XXXXX") with some regex magic
+PROJECT=$(echo "${PROJECT}" | sed 's/.*name="\(.*\)"[^"]*$/\1/' | cut -d'/' -f2)
+
+# echo to command to be sure
+echo "git push ssh://${ACCOUNT}@${SERVER}:${PORT}/${PROJECT} HEAD:refs/for/${BRANCH}"
+
+# run it, eval fusses parameters into one shell command
+eval "git push ssh://${ACCOUNT}@${SERVER}:${PORT}/${PROJECT} HEAD:refs/for/${BRANCH}"
