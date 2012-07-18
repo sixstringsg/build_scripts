@@ -5,10 +5,15 @@
 
 #Google for some magic bash replacement default variable stuff
 BRANCH=${1:-jb}
-SERVER=${2:-gerrit.aokp.co}
+SERVER=${2:-fnv.snipanet.com}
 [ -z $3 ] && PORT=29418 || PORT=$3 #Someone make numerical defaults work
-ACCOUNT=${4:-$USER} # $USER is the currently logged on user (shell var)
+ACCOUNT=${4:-sixstringsg} # $USER is the currently logged on user (shell var)
 DIR_CURRENT=$PWD # $PWD is the current directory (shell var)
+
+echo $BRANCH
+echo $SERVER
+echo $ACCOUNT
+echo $DIR_CURRENT
 
 # Loop through directory parents, find one with .git
 # ex: frameworks/base/wifi will find framerworks/base
@@ -24,17 +29,19 @@ while [ ! -d "$DIR_BOTTOM/.repo" ]; do
 DIR_BOTTOM=$(dirname ${DIR_BOTTOM})
 done
 
+echo DIR_BOTTOM: $DIR_BOTTOM
+
 # Take DIR_TOP (FNV/frameworks/base) and take off bottom (FNV/) leaving the local branch folder (frameworks/base)
 DEST=$(echo "${DIR_TOP}" | awk "BEGIN {FS=\"${DIR_BOTTOM}/\"} {print \$2}")
-
+echo destination: $DEST
 # Take the local folder and find it in the git manifest
 PROJECT=$(grep ${DEST} ${DIR_BOTTOM}/.repo/manifest.xml)
 
 # Take the remote part (name="XXXXX") with some regex magic
-PROJECT=$(echo "${PROJECT}" | sed 's/.*name="\(.*\)"[^"]*$/\1/' | cut -d'/' -f2)
-
+PROJECT=$(echo "${PROJECT}" | grep -Po 'name=".*?"' | cut -d '"' -f2 )
+echo project: $PROJECT
 # echo to command to be sure
 echo "git push ssh://${ACCOUNT}@${SERVER}:${PORT}/${PROJECT} HEAD:refs/for/${BRANCH}"
 
 # run it, eval fusses parameters into one shell command
-eval "git push ssh://${ACCOUNT}@${SERVER}:${PORT}/${PROJECT} HEAD:refs/for/${BRANCH}"
+eval "git push ssh://${ACCOUNT}@${SERVER}:${PORT}/FruitsAndVeggies/${PROJECT} HEAD:refs/for/${BRANCH}"
