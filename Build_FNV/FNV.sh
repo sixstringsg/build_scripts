@@ -27,3 +27,4 @@ scp $ZIP website@androtransfer.com:~/www/androtransfer.com/public_html/sixstring
 
 if test -x irc ; then
      ./irc New build is up for $2 get it at http://xfer.in/?developer=sixstringsg&folder=$2
+ssh antioch@sixstringsg.dyndns.org DISPLAY=:0 notify-send $2 build complete!
