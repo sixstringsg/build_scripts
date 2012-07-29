@@ -1,0 +1,22 @@
+#!/bin/bash
+
+MSG=$@
+[[ -z $MSG ]] && MSG="Hello World"
+
+NICK=FNVBot
+CHANNEL=#FNV
+#CHANNEL_PASS=" tkbeta"
+SERVER=irc.freenode.net
+PORT=6667
+
+expect -c "
+ spawn telnet $SERVER $PORT
+  expect \"No Ident response\"
+   send \"USER $NICK $NICK $NICK $NICK\rNICK $NICK\r\"
+  expect \" :+i\"
+   send \"JOIN $CHANNEL$CHANNEL_PASS\r\"
+  expect \"JOIN $CHANNEL\"
+   send \"PRIVMSG $CHANNEL :$MSG\rQUIT bye\r\"
+  expect \"BLAH BLAH\"
+   send \"BLAH\"
+"
