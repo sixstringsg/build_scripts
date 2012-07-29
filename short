@@ -1,10 +1,8 @@
-#!/usr/bin/env bash
+#!/bin/bash
 # command line url-shorten
-# by using ur1.ca
-# $USER, Aug 2009
 
 if [ -z $1 ];then
-   echo "insira a url a ser abreviada":
+   echo "Insert a URL to be shortened":
    read URL
    LONG=$URL
 else
